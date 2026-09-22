@@ -15,5 +15,3 @@ Artifacts are published per Minecraft version:
 dev.tako:tako-libs-fabric-1.20.4:0.1.0
 dev.tako:tako-libs-fabric-1.21.1:0.1.0
 ```
-
-The library does not depend on YACL.
