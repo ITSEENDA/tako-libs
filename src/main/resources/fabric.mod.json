@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"id": "tako-libs",
+	"version": "${version}",
+	"name": "Tako Libs",
+	"description": "Reusable client-side UI and state components for Fabric mods.",
+	"authors": ["Tako"],
+	"license": "CC0-1.0",
+	"environment": "client",
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": "~${minecraft_version}",
+		"fabric-language-kotlin": "*"
+	}
+}
