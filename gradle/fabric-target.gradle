@@ -3,6 +3,9 @@ sourceSets {
 		kotlin.srcDir(rootProject.file('src/main/kotlin'))
 		resources.srcDir(rootProject.file('src/main/resources'))
 	}
+	test {
+		kotlin.srcDir(rootProject.file('src/test/kotlin'))
+	}
 }
 
 def targetProperties = new Properties()
@@ -45,6 +48,7 @@ dependencies {
 	mappings "net.fabricmc:yarn:${yarnMappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${loaderVersion}"
 	modImplementation "net.fabricmc:fabric-language-kotlin:${fabricKotlinVersion}"
+	testImplementation 'junit:junit:4.13.2'
 }
 
 processResources {
