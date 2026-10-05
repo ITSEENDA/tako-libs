@@ -4,6 +4,18 @@ Reusable client-side UI, layout, editor history and runtime state components for
 
 ## Build
 
+Install the SVG rasterizer tool once before building:
+
+```text
+py -3 -m pip install -r tools/requirements-svg.txt
+```
+
+SVG sources under `assets/icons/svg` are converted to ignored PNG textures automatically by Gradle. To run the converter manually:
+
+```text
+py -3 scripts/svg_to_png.py
+```
+
 ```text
 gradlew.bat build
 gradlew.bat publishToMavenLocal
@@ -12,8 +24,8 @@ gradlew.bat publishToMavenLocal
 Artifacts are published per Minecraft version:
 
 ```text
-dev.tako:tako-libs-fabric-1.20.4:0.2.0
-dev.tako:tako-libs-fabric-1.21.1:0.2.0
+dev.tako:tako-libs-fabric-1.20.4:0.2.2
+dev.tako:tako-libs-fabric-1.21.1:0.2.2
 ```
 
 ## Layout

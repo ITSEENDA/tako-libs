@@ -52,6 +52,7 @@ dependencies {
 }
 
 processResources {
+	dependsOn rootProject.tasks.named('generateSvgIcons')
 	inputs.property 'version', project.version
 	inputs.property 'minecraft_version', minecraftVersion
 	inputs.property 'loader_version', loaderVersion
@@ -80,6 +81,10 @@ java {
 	toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
 	sourceCompatibility = JavaVersion.toVersion(javaVersion)
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
+}
+
+tasks.named('sourcesJar') {
+	dependsOn rootProject.tasks.named('generateSvgIcons')
 }
 
 publishing {

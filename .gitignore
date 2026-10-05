@@ -32,6 +32,9 @@ bin/
 
 run/
 
+# generated icon textures
+/src/main/resources/assets/tako-libs/textures/gui/icons-generated/
+
 # java
 
 hs_err_*.log
