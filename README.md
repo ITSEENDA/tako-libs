@@ -24,8 +24,8 @@ gradlew.bat publishToMavenLocal
 Artifacts are published per Minecraft version:
 
 ```text
-dev.tako:tako-libs-fabric-1.20.4:0.2.2
-dev.tako:tako-libs-fabric-1.21.1:0.2.2
+dev.tako:tako-libs-fabric-1.20.4:0.3.0
+dev.tako:tako-libs-fabric-1.21.1:0.3.0
 ```
 
 ## Layout
