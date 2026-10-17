@@ -2,6 +2,8 @@ package dev.tako.libs.client.ui.input
 
 import dev.tako.libs.client.ui.core.TakoScreenChrome
 import dev.tako.libs.client.ui.core.TakoTheme
+import dev.tako.libs.client.ui.core.TakoUiLayer
+import dev.tako.libs.client.ui.core.withUiLayer
 import dev.tako.libs.client.ui.layout.TakoBounds
 import dev.tako.libs.client.ui.layout.TakoLayoutable
 import net.minecraft.client.font.TextRenderer
@@ -32,14 +34,17 @@ class TakoMultiSelect<T>(
 
     fun render(context: DrawContext, x: Int, y: Int, width: Int, height: Int = 20) {
         val selectedText = if (selected.isEmpty()) "-" else selected.joinToString(", ", transform = label)
-        TakoScreenChrome.drawPanel(context, x, y, width, height, TakoTheme.PANEL_CARD)
-        context.drawTextWithShadow(textRenderer, Text.literal(selectedText), x + 6, y + 6, TakoTheme.TEXT_PRIMARY)
-        if (!expanded) return
-        items.forEachIndexed { index, item ->
-            val optionY = y + height * (index + 1)
-            val active = item in selected
-            TakoScreenChrome.drawPanel(context, x, optionY, width, height, if (active) TakoTheme.ACCENT else TakoTheme.PANEL)
-            context.drawTextWithShadow(textRenderer, Text.literal(if (active) "[x] ${label(item)}" else "[ ] ${label(item)}"), x + 6, optionY + 6, TakoTheme.TEXT_PRIMARY)
+        context.withUiLayer(if (expanded) TakoUiLayer.POPOVER else TakoUiLayer.CONTENT) {
+            TakoScreenChrome.drawPanel(context, x, y, width, height, TakoTheme.PANEL_CARD)
+            context.drawTextWithShadow(textRenderer, Text.literal(selectedText), x + 6, y + 6, TakoTheme.TEXT_PRIMARY)
+            if (expanded) {
+                items.forEachIndexed { index, item ->
+                    val optionY = y + height * (index + 1)
+                    val active = item in selected
+                    TakoScreenChrome.drawPanel(context, x, optionY, width, height, if (active) TakoTheme.ACCENT else TakoTheme.PANEL)
+                    context.drawTextWithShadow(textRenderer, Text.literal(if (active) "[x] ${label(item)}" else "[ ] ${label(item)}"), x + 6, optionY + 6, TakoTheme.TEXT_PRIMARY)
+                }
+            }
         }
     }
 

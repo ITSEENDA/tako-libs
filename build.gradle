@@ -21,6 +21,23 @@ if (selectedProjects.any { it == null }) {
 	)
 }
 
+def iconSvgDir = rootProject.file('assets/icons/svg')
+def iconPngDir = rootProject.file('src/main/resources/assets/tako-libs/textures/gui/icons-generated')
+def iconConverter = rootProject.file('scripts/svg_to_png.py')
+
+tasks.register('generateSvgIcons', Exec) {
+	inputs.dir(iconSvgDir)
+	inputs.file(iconConverter)
+	outputs.dir(iconPngDir)
+	onlyIf { fileTree(iconSvgDir).matching { include '**/*.svg' }.files }
+	doFirst {
+		def pythonArgs = System.getProperty('os.name').toLowerCase().contains('windows')
+			? ['py', '-3', iconConverter.absolutePath]
+			: ['python3', iconConverter.absolutePath]
+		commandLine(pythonArgs)
+	}
+}
+
 tasks.register('buildToPath', Copy) {
 	dependsOn(selectedProjects.collect { "${it}:remapJar" })
 	selectedProjects.each { targetProject ->

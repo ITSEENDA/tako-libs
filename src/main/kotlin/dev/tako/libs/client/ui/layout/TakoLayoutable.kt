@@ -2,7 +2,7 @@ package dev.tako.libs.client.ui.layout
 
 import net.minecraft.client.gui.widget.ClickableWidget
 
-/** Component contract used by TakoContainer to apply calculated bounds. */
+/** Component contract used by TakoFlexContainer and TakoGridContainer to apply bounds. */
 interface TakoLayoutable {
     fun layout(bounds: TakoBounds)
 }

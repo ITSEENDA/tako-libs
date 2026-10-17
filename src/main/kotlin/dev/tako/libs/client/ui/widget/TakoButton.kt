@@ -29,6 +29,28 @@ class TakoButton(
     val textRenderer: TextRenderer,
     var style: TakoButtonStyle = TakoButtonStyle()
 ) : ClickableWidget(x, y, width, height, Text.literal(label)), TakoLayoutable {
+    companion object {
+        fun wrapContent(
+            label: String,
+            x: Int,
+            y: Int,
+            onPress: () -> Unit,
+            textRenderer: TextRenderer,
+            height: Int = 20,
+            horizontalPadding: Int = 12,
+            style: TakoButtonStyle = TakoButtonStyle()
+        ): TakoButton = TakoButton(
+            label = label,
+            x = x,
+            y = y,
+            width = textRenderer.getWidth(label) + horizontalPadding.coerceAtLeast(0),
+            height = height,
+            onPress = onPress,
+            textRenderer = textRenderer,
+            style = style
+        )
+    }
+
     override fun layout(bounds: TakoBounds) {
         setDimensionsAndPosition(bounds.width, bounds.height, bounds.x, bounds.y)
     }

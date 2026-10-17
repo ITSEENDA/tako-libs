@@ -2,6 +2,8 @@ package dev.tako.libs.client.ui.input
 
 import dev.tako.libs.client.ui.core.TakoScreenChrome
 import dev.tako.libs.client.ui.core.TakoTheme
+import dev.tako.libs.client.ui.core.TakoUiLayer
+import dev.tako.libs.client.ui.core.withUiLayer
 import dev.tako.libs.client.ui.layout.TakoBounds
 import dev.tako.libs.client.ui.layout.TakoLayoutable
 import net.minecraft.client.font.TextRenderer
@@ -31,15 +33,26 @@ class TakoDropdown<T>(
     }
 
     fun render(context: DrawContext, x: Int, y: Int, width: Int, height: Int = 20) {
-        val selectedText = selectedItem?.let(label) ?: "-"
-        TakoScreenChrome.drawPanel(context, x, y, width, height, TakoTheme.PANEL_CARD)
-        context.drawTextWithShadow(textRenderer, Text.literal(selectedText), x + 6, y + 6, TakoTheme.TEXT_PRIMARY)
-        context.drawTextWithShadow(textRenderer, Text.literal(if (expanded) "^" else "v"), x + width - 12, y + 6, TakoTheme.TEXT_SECONDARY)
-        if (!expanded) return
-        items.forEachIndexed { index, item ->
-            val optionY = y + height * (index + 1)
-            TakoScreenChrome.drawPanel(context, x, optionY, width, height, if (index == selectedIndex) TakoTheme.ACCENT else TakoTheme.PANEL)
-            context.drawTextWithShadow(textRenderer, Text.literal(label(item)), x + 6, optionY + 6, TakoTheme.TEXT_PRIMARY)
+        val renderPopup = expanded
+        context.withUiLayer(if (renderPopup) TakoUiLayer.POPOVER else TakoUiLayer.CONTENT) {
+            val selectedText = selectedItem?.let(label) ?: "-"
+            TakoScreenChrome.drawPanel(context, x, y, width, height, 0xFF151515.toInt())
+            context.drawTextWithShadow(textRenderer, Text.literal(selectedText), x + 6, y + 6, TakoTheme.TEXT_PRIMARY)
+            context.drawTextWithShadow(textRenderer, Text.literal(if (renderPopup) "^" else "v"), x + width - 12, y + 6, TakoTheme.TEXT_SECONDARY)
+            if (renderPopup) {
+                items.forEachIndexed { index, item ->
+                    val optionY = y + height * (index + 1)
+                    TakoScreenChrome.drawPanel(
+                        context,
+                        x,
+                        optionY,
+                        width,
+                        height,
+                        if (index == selectedIndex) TakoTheme.ACCENT else 0xFF101010.toInt()
+                    )
+                    context.drawTextWithShadow(textRenderer, Text.literal(label(item)), x + 6, optionY + 6, TakoTheme.TEXT_PRIMARY)
+                }
+            }
         }
     }
 

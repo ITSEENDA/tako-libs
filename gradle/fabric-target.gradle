@@ -3,6 +3,9 @@ sourceSets {
 		kotlin.srcDir(rootProject.file('src/main/kotlin'))
 		resources.srcDir(rootProject.file('src/main/resources'))
 	}
+	test {
+		kotlin.srcDir(rootProject.file('src/test/kotlin'))
+	}
 }
 
 def targetProperties = new Properties()
@@ -45,9 +48,11 @@ dependencies {
 	mappings "net.fabricmc:yarn:${yarnMappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${loaderVersion}"
 	modImplementation "net.fabricmc:fabric-language-kotlin:${fabricKotlinVersion}"
+	testImplementation 'junit:junit:4.13.2'
 }
 
 processResources {
+	dependsOn rootProject.tasks.named('generateSvgIcons')
 	inputs.property 'version', project.version
 	inputs.property 'minecraft_version', minecraftVersion
 	inputs.property 'loader_version', loaderVersion
@@ -76,6 +81,10 @@ java {
 	toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
 	sourceCompatibility = JavaVersion.toVersion(javaVersion)
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
+}
+
+tasks.named('sourcesJar') {
+	dependsOn rootProject.tasks.named('generateSvgIcons')
 }
 
 publishing {
