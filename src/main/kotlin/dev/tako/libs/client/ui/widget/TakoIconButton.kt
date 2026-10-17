@@ -31,7 +31,7 @@ class TakoIconButton(
     )
 
     init {
-        setTooltip(Tooltip.of(label))
+        tooltip = Tooltip.of(label)
     }
 
     override fun layout(bounds: TakoBounds) {
@@ -53,15 +53,21 @@ class TakoIconButton(
         context.fill(x, y + height - 1, x + width, y + height, 0xFF202020.toInt())
         context.fill(x, y, x + 1, y + height, 0xFF202020.toInt())
         context.fill(x + width - 1, y, x + width, y + height, 0xFF202020.toInt())
-        drawIcon(context, x + width / 2, y + height / 2, if (active) 0xFFFFFFFF.toInt() else 0xFF888888.toInt())
+        val iconSize = (minOf(width, height) * 35 / 100).coerceAtLeast(1)
+        drawIcon(
+            context,
+            x + (width - iconSize) / 2,
+            y + (height - iconSize) / 2,
+            iconSize,
+            if (active) 0xFFFFFFFF.toInt() else 0xFF888888.toInt()
+        )
     }
 
     override fun appendClickableNarrations(builder: NarrationMessageBuilder) {
         appendDefaultNarrations(builder)
     }
 
-    private fun drawIcon(context: DrawContext, centerX: Int, centerY: Int, tint: Int) {
-        val size = 16
+    private fun drawIcon(context: DrawContext, x: Int, y: Int, size: Int, tint: Int) {
         context.setShaderColor(
             ((tint shr 16) and 0xFF) / 255f,
             ((tint shr 8) and 0xFF) / 255f,
@@ -71,12 +77,14 @@ class TakoIconButton(
         try {
             context.drawTexture(
                 texture,
-                centerX - size / 2,
-                centerY - size / 2,
-                0f,
-                0f,
+                x,
+                y,
                 size,
                 size,
+                0f,
+                0f,
+                32,
+                32,
                 32,
                 32
             )
